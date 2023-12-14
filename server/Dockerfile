@@ -5,3 +5,4 @@ ENV PYTHONUNBUFFERED 1
 
 RUN mkdir /app
 WORKDIR /app
+RUN pip install Django==3.2.12
