@@ -6,4 +6,3 @@ ENV PYTHONUNBUFFERED 1
 RUN mkdir /app
 WORKDIR /app
 RUN pip install Django==3.2.12
-RUN pip install Pillow==10.1.0
