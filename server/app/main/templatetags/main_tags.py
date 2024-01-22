@@ -6,6 +6,6 @@ from main.models import Banner
 register = template.Library()
 
 
-@register.simple_tag()
-def get_banners():
-    return Banner.objects.all()
+# @register.simple_tag()
+# def get_banners():
+#     return Banner.objects.all()

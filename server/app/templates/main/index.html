@@ -2,33 +2,21 @@
 {% load static %}
 {% load main_tags %}
 {% block content %}
-{% get_banners as banners %}
+
 
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
-      <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
+      <ol id="OlOfmyCarousel" class="carousel-indicators">
+
       </ol>
-      <div class="carousel-inner">
+
+
+
+      <div id="carousel" class="carousel-inner">
         
-        {% for banner in banners %}
-          {% if forloop.first %}
-            <div class="carousel-item active">
-          {% else %}
-            <div class="carousel-item">
-          {% endif %}
-            <img class="first-slide" src="{{ banner.image.url }}">
-            <div class="container">
-              <div class="carousel-caption text-left">
-                <h1>{{ banner.title }}</h1>
-                <p>{{ banner.description }}</p>
-                <p><a class="btn btn-lg btn-success" href="{{ banner.href }}" role="button">Посмотреть</a></p>
-              </div>
-            </div>
-          </div>
-        {% endfor %}
+  
       </div>
+
+      
       <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="sr-only">Previous</span>
@@ -108,4 +96,72 @@
       <!-- /END THE FEATURETTES -->
 
     </div>
+
+
+
+    <script>
+      async function getBanners() {
+      const response = await fetch("/api/getbanners");
+      var banners = await response.json();
+      
+      var OlOfmyCarousel = document.getElementById('OlOfmyCarousel');
+      var main_window = document.getElementById('carousel');
+      for(var i=0; i < banners.length; i++){
+        var banner_title = document.createElement("h1");
+        banner_title.innerHTML = banners[i].title;
+        var banner_description = document.createElement("p");
+        banner_description.innerHTML = banners[i].description;
+        var banner_button = document.createElement('a');
+        banner_button.classList = "btn btn-lg btn-success";
+        banner_button.href = banners[i].href;
+        banner_button.role = "button";
+        banner_button.innerHTML = "Посмотреть";
+        var div1 = document.createElement("div");
+        div1.classList = "carousel-caption text-left";
+    
+        div1.appendChild(banner_title);
+        div1.appendChild(banner_description);
+        div1.appendChild(banner_button);
+    
+    
+        console.log(banners[i]);
+        
+        var container_div = document.createElement("div");
+        container_div.classList = "container";
+        container_div.appendChild(div1);
+    
+        var banner_image = document.createElement("img");
+        banner_image.classList = "first-slide";
+        banner_image.src = banners[i].image;
+    
+    
+        var item = document.createElement("div");
+
+
+        var li = document.createElement("li");
+        li.setAttribute('data-target', '#myCarousel');
+        li.setAttribute('data-slide-to', i);
+
+               
+        if(i==0){
+          item.classList = "carousel-item active";
+          li.classList="active"
+        }
+        else{
+          item.classList = "carousel-item";
+        }
+    
+        item.appendChild(banner_image);
+        item.appendChild(container_div);
+        OlOfmyCarousel.appendChild(li);
+
+        main_window.appendChild(item);
+    
+        
+        
+      }
+    }
+    getBanners();
+    
+    </script>
 {% endblock %}
